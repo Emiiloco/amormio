@@ -9,7 +9,7 @@ async function uploadToImgBB(file) {
         console.log("Iniciando subida...");
         
         // CORRECCIÓN: La URL debe llevar /1/upload?key= antes de la API_KEY
-        const response = await fetch("https://api.imgbb.com" + API_KEY, {
+        const response = await fetch("https://api.imgbb.com/1/upload" + API_KEY, {
             method: 'POST',
             body: formData
         });

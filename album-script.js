@@ -1,5 +1,5 @@
 // 1. TU API KEY (Verifica que sea la correcta en ://imgbb.com)
-const API_KEY = '2e2e6d9bda78389ac280508cd3bda27b'; 
+const API_KEY = 'b975662820a8a95ce757459615a27c9f'; 
 
 async function uploadToImgBB(file) {
     const formData = new FormData();

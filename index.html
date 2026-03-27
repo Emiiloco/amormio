@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nuestra Historia</title>
+    <!-- Fuentes (He añadido las que usas en el CSS para que carguen bien) -->
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- NAV CORREGIDO: Estructura interna para evitar amontonamiento -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span>Nuestra Historia</span>
+                <span class="heart-pulse">❤️</span>
+            </div>
+            
+            <ul class="nav-links">
+                <!-- En móvil ocultamos estos para que quepa el álbum -->
+                <li class="hide-mobile"><a href="index.html">Inicio</a></li>
+                <li><a href="album.html" class="nav-special">Álbum 📸</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenedor que evita el scroll lateral -->
+    <div class="main-wrapper">
+        
+        <section class="hero">
+            <h1 class="neon-title">Para mi vida Jazmin</h1>
+            <p class="date-badge">Desde el 26.02.2025</p>
+            <div class="counter">
+                <div class="time-box"><span id="days">0</span><small>Días</small></div>
+                <div class="time-box"><span id="hours">0</span><small>Horas</small></div>
+                <div class="time-box"><span id="minutes">0</span><small>Mins</small></div>
+                <div class="time-box"><span id="seconds">0</span><small>Segs</small></div>
+            </div>
+        </section>
+
+        <div class="lyrics-wrap">
+            <p class="lyric-line">Sos la persona mas linda del mundo</p>
+            <p class="lyric-line">Y sos parte de mi alma</p>
+            <p class="lyric-line highlight">Solo te amo a vos</p>
+            <p class="lyric-line">Y siempre vas a ser vos amor</p>
+            <p class="lyric-line">Sos perfecta ante mis ojos</p>
+        </div>
+
+        <div class="gallery">
+            <div class="photo-card" style="--r: -3deg;">
+                <img src="6fbd1be5-4e12-41ae-a781-6dd68e5870bb.JPG" alt="Momento 1">
+                <p>Nuestro inicio</p>
+            </div>
+            <div class="photo-card" style="--r: 4deg;">
+                <img src="d9996ae9-8a15-4220-ad69-f44809059ecf.JPG" alt="Momento 2">
+                <p>Tus risas</p>
+            </div>
+            <div class="photo-card" style="--r: -2deg;">
+                <img src="49bac884-c021-4131-9133-712ee45977ae.JPG" alt="Momento 3">
+                <p>Por siempre</p>
+            </div>
+            <div class="photo-card" style="--r: 2deg;">
+                <img src="IMG_0099.jpeg" alt="Momento 4">
+                <p>Momentos</p>
+            </div>
+            <div class="photo-card" style="--r: -3deg;">
+                <img src="FullSizeRender.jpeg" alt="Momento 5">
+                <p>Juntos</p>
+            </div>
+        </div>
+
+        <!-- Seccion Puzzle -->
+        <section class="build-zone" id="trigger">
+            <div class="sticky-box">
+                <div id="puzzle-container" class="puzzle-container"></div>
+                <div class="final-text">
+                    <span class="word">Te</span>
+                    <span class="word">quiero</span>
+                    <span class="word">para</span>
+                    <span class="word">toda</span>
+                    <span class="word">la</span>
+                    <span class="word">vida</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seccion Deseo -->
+        <section class="wish-section" id="wishSection">
+            <div class="wish-content">
+                <h2 class="wish-title">Llegaste al final... ❤️</h2>
+                <p>Tengo una última sorpresa para vos</p>
+                
+                <div class="button-wrapper">
+                    <button id="magicButton" class="magic-btn">Pedi un deseo ✨</button>
+                    <div class="btn-glow"></div>
+                </div>
+
+                <p id="wishMessage" class="hidden-message">¡Mi deseo es estar contigo siempre! 🌸</p>
+            </div>
+        </section>
+
+    </div> <!-- Fin main-wrapper -->
+
+    <div id="confetti-container"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

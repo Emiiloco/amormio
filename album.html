@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Álbum Vivo 📸</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <link rel="stylesheet" href="album-style.css">
+</head>
+<body>
+
+    <div class="aesthetic-bg"></div>
+
+    <nav>
+        <a href="index.html" class="back-btn">← Volver al inicio</a>
+    </nav>
+
+    <section class="upload-section">
+        <div class="upload-container">
+            <h1 class="vivid-title">Nuestro Álbum Vivo 📸</h1>
+            <p class="subtitle">Subi aqui esos momentos que nos hacen sonreír</p>
+            
+            <div class="input-wrapper">
+                <input type="file" id="imageInput" accept="image/*" hidden>
+                <label for="imageInput" class="custom-file-upload">
+                    Seleccionar Foto ✨
+                </label>
+            </div>
+
+            <div id="userGallery" class="user-gallery">
+                <!-- Las fotos se cargan aquí -->
+            </div>
+        </div>
+    </section>
+
+<script type="module" src="album-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+:root {
+    --neon-pink: #ff85a1;
+    --neon-glow: #ff004c;
+    --spotify-gray: #b3b3b3;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.aesthetic-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(45deg, #121212, #1a1a2e, #2d1b33, #121212);
+    background-size: 400% 400%;
+    animation: aestheticGradient 15s ease infinite;
+    z-index: -1;
+}
+
+@keyframes aestheticGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+nav { padding: 20px; }
+.back-btn {
+    text-decoration: none;
+    color: var(--neon-pink);
+    font-weight: bold;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.upload-section {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.vivid-title {
+    font-family: 'Fredoka', sans-serif;
+    color: var(--neon-pink);
+    font-size: 3rem;
+    text-shadow: 0 0 15px var(--neon-glow);
+    margin-bottom: 10px;
+}
+
+.subtitle { color: var(--spotify-gray); margin-bottom: 40px; }
+
+.custom-file-upload {
+    background: #feca57;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(254, 202, 87, 0.4);
+    display: inline-block;
+}
+
+.user-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 25px;
+    max-width: 1000px;
+    margin: 60px auto;
+}
+
+.user-photo {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    background: white;
+    padding: 10px 10px 30px 10px;
+    border-radius: 4px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    animation: popIn 0.5s ease-out;
+}
+
+@keyframes popIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

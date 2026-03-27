@@ -1,0 +1,568 @@
+:root {
+    --spotify-black: #121212;
+    --spotify-gray: #b3b3b3;
+    --neon-pink: #ff85a1;
+    --neon-glow: #ff004c;
+}
+
+/* --- 1. RESET Y PARCHE DE SEGURIDAD --- */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
+
+/* ELIMINAMOS overflow de html para que funcione el sticky */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    width: 100%;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    /* Mantenemos tu fondo aesthetic animado */
+    background: linear-gradient(45deg, #121212, #1a1a2e, #2d1b33, #121212);
+    background-size: 400% 400%;
+    animation: aestheticGradient 15s ease infinite;
+    position: relative;
+    overflow-x: hidden; /* Solo en el body */
+}
+
+@keyframes aestheticGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Grano vintage */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url('https://grainy-gradients.vercel.app');
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* --- 2. NAVEGACIÓN --- */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background: rgba(18, 18, 18, 0.8);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+}
+
+.nav-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5rem;
+    color: var(--neon-pink);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 15px;
+    align-items: center;
+}
+
+.nav-links a { text-decoration: none; color: white; font-size: 0.9rem; }
+.nav-special {
+    background: rgba(255, 133, 161, 0.2);
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--neon-pink);
+}
+
+/* --- 3. HERO Y CONTADOR --- */
+.hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 70px;
+}
+
+.neon-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    color: var(--neon-pink);
+    text-shadow: 0 0 15px var(--neon-glow);
+}
+
+.counter {
+    display: flex;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px 25px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    margin-top: 20px;
+}
+
+.time-box { text-align: center; }
+.time-box span { font-size: 1.8rem; font-weight: 900; }
+.time-box small { font-size: 0.6rem; color: var(--spotify-gray); display: block; }
+
+/* --- 4. LYRICS Y GALERÍA --- */
+.lyrics-wrap { 
+    padding: 100px 20px; 
+    max-width: 800px; 
+    margin: 0 auto; 
+    text-align: left; /* Estilo Spotify original */
+}
+
+.lyric-line {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 900;
+    color: #2a2a2a; /* Color apagado inicial */
+    margin-bottom: 30px;
+    transition: color 0.4s ease, filter 0.4s ease; /* Transición suave */
+    line-height: 1.2;
+    filter: blur(1px); /* Un poco borroso cuando está apagado */
+}
+
+/* Esta clase la pondrá el JavaScript automáticamente al scrollear */
+.lyric-line.active { 
+    color: #ffffff !important; 
+    filter: blur(0) drop-shadow(0 0 10px rgba(255,255,255,0.5)); 
+}
+
+.lyric-line.highlight { 
+    text-decoration: underline; 
+    text-underline-offset: 8px; 
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 40px 20px;
+    scrollbar-width: none;
+}
+.gallery::-webkit-scrollbar { display: none; }
+
+.photo-card {
+    flex: 0 0 250px;
+    background: white;
+    padding: 10px 10px 35px 10px;
+    transform: rotate(var(--r));
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.photo-card img { width: 100%; height: 300px; object-fit: cover; }
+
+/* --- 5. EL PUZZLE (CORREGIDO Y BLOQUEADO) --- */
+.build-zone { 
+    height: 300vh; /* Espacio para el scroll */
+    position: relative; 
+    width: 100%;
+    margin: 0;
+}
+
+.sticky-box {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Clave para que no se mueva a los lados */
+}
+
+.puzzle-container {
+    position: relative;
+    width: 320px; 
+    height: 420px;
+    max-width: 90vw;
+}
+
+.piece {
+    position: absolute;
+    background-repeat: no-repeat;
+    will-change: transform, opacity;
+}
+
+.final-text {
+    position: absolute;
+    bottom: 60px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.word {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--neon-pink);
+    text-shadow: 0 0 10px var(--neon-glow);
+}
+
+/* --- 6. SECCIÓN FINAL --- */
+.wish-section {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, rgba(255, 236, 242, 0.1) 0%, transparent 80%);
+}
+
+.magic-btn {
+    background: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 15px 35px;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.btn-glow {
+    position: absolute;
+    width: 120%; height: 120%;
+    background: var(--neon-pink);
+    filter: blur(20px);
+    border-radius: 50px;
+    opacity: 0.5;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 0.5; }
+}
+
+/* --- 7. RESPONSIVE MÓVIL --- */
+@media (max-width: 768px) {
+    .hide-mobile { display: none; }
+    .neon-title { font-size: 2.2rem; }
+    .counter { gap: 8px; padding: 10px 15px; }
+    .time-box span { font-size: 1.4rem; }
+    .photo-card { flex: 0 0 180px; }
+}
+
+/* --- 6. SECCIÓN FINAL --- */
+.wish-section {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, rgba(255, 236, 242, 0.1) 0%, transparent 80%);
+}
+
+.magic-btn {
+    background: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 15px 35px;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.btn-glow {
+    position: absolute;
+    width: 120%; height: 120%;
+    background: var(--neon-pink);
+    filter: blur(20px);
+    border-radius: 50px;
+    opacity: 0.5;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 0.5; }
+}
+
+/* --- 7. RESPONSIVE MÓVIL --- */
+@media (max-width: 768px) {
+    .hide-mobile { display: none; }
+    .neon-title { font-size: 2.2rem; }
+    .counter { gap: 8px; padding: 10px 15px; }
+    .time-box span { font-size: 1.4rem; }
+    .photo-card { flex: 0 0 180px; }
+}
+.magic-button {
+    background: #ff758c;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255, 117, 140, 0.6);
+    transition: transform 0.3s;
+    margin-top: 30px;
+    display: none; 
+}
+.magic-button.show { display: block; animation: pulse 2s infinite; }
+
+.wish-section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    
+    background: radial-gradient(circle at center, rgba(255, 236, 242, 0.1) 0%, transparent 80%);
+}
+
+.wish-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3rem;
+    color: #ff4d6d;
+    margin-bottom: 10px;
+}
+
+.button-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-top: 30px;
+}
+
+.magic-btn {
+    background: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 20px 40px;
+    font-size: 1.5rem;
+    font-family: 'Fredoka', sans-serif;
+    border-radius: 50px;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    transition: transform 0.3s, background 0.3s;
+    box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+}
+
+.magic-btn:active { transform: scale(0.9); }
+
+
+.btn-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110%; height: 120%;
+    background: #ffb3c1;
+    filter: blur(20px);
+    border-radius: 50px;
+    z-index: 1;
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+    0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+    100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+}
+
+.hidden-message {
+    margin-top: 25px;
+    font-size: 1.5rem;
+    color: #ff4d6d;
+    font-family: 'Dancing Script', cursive;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.hidden-message.show { opacity: 1; }
+
+
+.heart-confetti {
+    position: fixed;
+    font-size: 2rem;
+    user-select: none;
+    pointer-events: none;
+    z-index: 9999;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to { transform: translateY(110vh) rotate(360deg); }
+}
+
+
+
+
+.upload-section {
+    padding: 80px 20px;
+    background: #fff0f3;
+    text-align: center;
+}
+
+.vivid-title {
+    font-family: 'Fredoka', sans-serif;
+    color: #ff4d6d;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.input-wrapper {
+    margin: 30px 0;
+}
+
+.custom-file-upload {
+    background: #feca57; 
+    color: white;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: inline-block;
+    box-shadow: 0 8px 15px rgba(254, 202, 87, 0.4);
+    transition: 0.3s;
+}
+
+.custom-file-upload:hover {
+    transform: scale(1.05);
+    background: #ff9f43;
+}
+
+.user-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 20px;
+    max-width: 800px;
+    margin: 40px auto 0;
+}
+
+.user-photo {
+       width: 100%;
+    height: 160px;
+    object-fit: cover;
+    background: white;
+    padding: 8px 8px 25px 8px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+
+
+/* --- NAVEGACIÓN PREMIUM --- */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+    background: rgba(18, 18, 18, 0.7); /* Fondo oscuro traslúcido */
+    backdrop-filter: blur(15px); /* Efecto cristal */
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8rem;
+    color: var(--neon-pink);
+    text-shadow: 0 0 10px var(--neon-glow);
+}
+
+.heart-pulse {
+    display: inline-block;
+    animation: heartBeat 1.5s infinite;
+}
+
+@keyframes heartBeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    opacity: 0.8;
+}
+
+.nav-links a:hover {
+    opacity: 1;
+    color: var(--neon-pink);
+    text-shadow: 0 0 8px var(--neon-glow);
+}
+
+/* Botón especial para el Álbum */
+.nav-special {
+    background: rgba(255, 133, 161, 0.2);
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--neon-pink);
+}
+
+/* --- RESPONSIVE NAV --- */
+@media (max-width: 768px) {
+    .navbar { padding: 0 20px; }
+    .nav-links {
+        display: none; /* Se oculta en móvil para usar el menú hamburguesa si decides programarlo */
+    }
+    .nav-logo span:first-child { font-size: 1.4rem; }
+    
+    /* Mostrar solo el link al álbum en móvil para no saturar */
+    .nav-links {
+        display: flex;
+        gap: 15px;
+    }
+    .nav-links li:not(:last-child) { display: none; }
+}
+
+
+

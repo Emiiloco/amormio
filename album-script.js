@@ -1,5 +1,5 @@
 // 1. TU API KEY DE IMGBB (Cópiala de ://imgbb.com)
-const API_KEY = 'TU_API_KEY_AQUI'; 
+const API_KEY = '2e2e6d9bda78389ac280508cd3bda27b'; 
 
 const userGallery = document.getElementById('userGallery');
 const imageInput = document.getElementById('imageInput');

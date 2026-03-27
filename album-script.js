@@ -9,7 +9,7 @@ async function uploadToImgBB(file) {
     formData.append('image', file);
 
     try {
-        const response = await fetch(`https://api.imgbb.com{API_KEY}`, {
+        const response = await fetch(`https://api.imgbb.com{2e2e6d9bda78389ac280508cd3bda27b}`, {
             method: 'POST',
             body: formData
         });

@@ -1,24 +1,17 @@
-// 1. TU API KEY (Asegúrate de que NO tenga espacios antes o después)
+// 1. TU API KEY (Verifica que sea la correcta en ://imgbb.com)
 const API_KEY = '2e2e6d9bda78389ac280508cd3bda27b'; 
-
-const userGallery = document.getElementById('userGallery');
-const imageInput = document.getElementById('imageInput');
-
-// Cargar fotos guardadas localmente
-window.addEventListener('DOMContentLoaded', () => {
-    const savedPhotos = JSON.parse(localStorage.getItem('ourCloudPhotos') || '[]');
-    savedPhotos.forEach(url => displayPhoto(url));
-});
 
 async function uploadToImgBB(file) {
     const formData = new FormData();
     formData.append('image', file);
 
     try {
-        console.log("Intentando subir...");
-        const response = await fetch(`https://api.imgbb.com{API_KEY}`, {
+        console.log("Iniciando subida...");
+        // Usamos una URL directa para evitar errores de red comunes
+        const response = await fetch("https://api.imgbb.com" + API_KEY, {
             method: 'POST',
-            body: formData
+            body: formData,
+            mode: 'cors' // Forzamos el modo seguro para Netlify
         });
         
         const data = await response.json();
@@ -31,29 +24,11 @@ async function uploadToImgBB(file) {
             displayPhoto(url);
             alert("¡Foto guardada con éxito! ❤️");
         } else {
-            // ESTO TE DIRÁ EL ERROR REAL
-            alert("Error de ImgBB: " + data.error.message);
+            alert("Error del servidor: " + data.error.message);
         }
     } catch (error) {
-        alert("Error de red: Verifica tu conexión a internet.");
+        // Si sale este error, es probable que la imagen sea muy grande o la API KEY esté mal
+        console.error(error);
+        alert("Error de conexión. Prueba con una foto menos pesada o revisa tu API KEY.");
     }
-}
-
-if (imageInput) {
-    imageInput.addEventListener('change', (e) => {
-        const file = e.target.files[0]; // <--- ASEGÚRATE QUE TENGA EL [0]
-        if (file) {
-            uploadToImgBB(file);
-        }
-    });
-}
-
-function displayPhoto(src) {
-    if(!userGallery) return;
-    const img = document.createElement('img');
-    img.src = src;
-    img.className = 'user-photo';
-    const randomRot = Math.floor(Math.random() * 10) - 5;
-    img.style.transform = `rotate(${randomRot}deg)`;
-    userGallery.appendChild(img);
 }

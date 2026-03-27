@@ -1,33 +1,37 @@
-// 1. TU API KEY (Verifica que sea la correcta en ://imgbb.com)
-const API_KEY = 'b975662820a8a95ce757459615a27c9f'; 
+const imageInput = document.getElementById('imageInput');
+const userGallery = document.getElementById('userGallery');
 
-async function uploadToImgBB(file) {
-    const formData = new FormData();
-    formData.append('image', file);
+// Cargar fotos guardadas
+window.addEventListener('DOMContentLoaded', () => {
+    const savedPhotos = JSON.parse(localStorage.getItem('ourPhotos') || '[]');
+    savedPhotos.forEach(src => displayPhoto(src));
+});
 
-    try {
-        console.log("Iniciando subida...");
-        
-        // CORRECCIÓN: La URL debe llevar /1/upload?key= antes de la API_KEY
-        const response = await fetch("https://api.imgbb.com/1/upload" + API_KEY, {
-            method: 'POST',
-            body: formData
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            const url = data.data.url;
-            let savedPhotos = JSON.parse(localStorage.getItem('ourCloudPhotos') || '[]');
-            savedPhotos.push(url);
-            localStorage.setItem('ourCloudPhotos', JSON.stringify(savedPhotos));
-            displayPhoto(url);
-            alert("¡Foto guardada con éxito! ❤️");
-        } else {
-            alert("Error del servidor: " + data.error.message);
-        }
-    } catch (error) {
-        console.error(error);
-        alert("Error de conexión. Asegúrate de que la foto no sea muy pesada.");
+// Guardar nueva foto
+imageInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const base64Image = event.target.result;
+            const savedPhotos = JSON.parse(localStorage.getItem('ourPhotos') || '[]');
+            savedPhotos.push(base64Image);
+            localStorage.setItem('ourPhotos', JSON.stringify(savedPhotos));
+            displayPhoto(base64Image);
+        };
+        reader.readAsDataURL(file);
     }
+});
+
+function displayPhoto(src) {
+    const img = document.createElement('img');
+    img.src = src;
+    img.className = 'user-photo';
+    
+    // Rotación aleatoria corregida
+    const randomRot = Math.floor(Math.random() * 10) - 5;
+    img.style.transform = `rotate(${randomRot}deg)`;
+    
+    userGallery.appendChild(img);
 }
+

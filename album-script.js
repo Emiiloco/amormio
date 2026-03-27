@@ -7,11 +7,11 @@ async function uploadToImgBB(file) {
 
     try {
         console.log("Iniciando subida...");
-        // Usamos una URL directa para evitar errores de red comunes
+        
+        // CORRECCIÓN: La URL debe llevar /1/upload?key= antes de la API_KEY
         const response = await fetch("https://api.imgbb.com" + API_KEY, {
             method: 'POST',
-            body: formData,
-            mode: 'cors' // Forzamos el modo seguro para Netlify
+            body: formData
         });
         
         const data = await response.json();
@@ -27,8 +27,7 @@ async function uploadToImgBB(file) {
             alert("Error del servidor: " + data.error.message);
         }
     } catch (error) {
-        // Si sale este error, es probable que la imagen sea muy grande o la API KEY esté mal
         console.error(error);
-        alert("Error de conexión. Prueba con una foto menos pesada o revisa tu API KEY.");
+        alert("Error de conexión. Asegúrate de que la foto no sea muy pesada.");
     }
 }

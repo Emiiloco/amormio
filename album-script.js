@@ -1,22 +1,21 @@
-// 1. TU API KEY DE IMGBB (Cópiala de ://imgbb.com)
+// 1. TU API KEY (Asegúrate de que NO tenga espacios antes o después)
 const API_KEY = '2e2e6d9bda78389ac280508cd3bda27b'; 
 
 const userGallery = document.getElementById('userGallery');
 const imageInput = document.getElementById('imageInput');
 
-// 2. CARGAR FOTOS GUARDADAS AL INICIAR
+// Cargar fotos guardadas localmente
 window.addEventListener('DOMContentLoaded', () => {
     const savedPhotos = JSON.parse(localStorage.getItem('ourCloudPhotos') || '[]');
     savedPhotos.forEach(url => displayPhoto(url));
 });
 
-// 3. FUNCIÓN PARA SUBIR A LA NUBE
 async function uploadToImgBB(file) {
     const formData = new FormData();
     formData.append('image', file);
 
     try {
-        console.log("Subiendo...");
+        console.log("Intentando subir...");
         const response = await fetch(`https://api.imgbb.com{API_KEY}`, {
             method: 'POST',
             body: formData
@@ -26,35 +25,29 @@ async function uploadToImgBB(file) {
         
         if (data.success) {
             const url = data.data.url;
-            
-            // Guardar el link en la memoria
             let savedPhotos = JSON.parse(localStorage.getItem('ourCloudPhotos') || '[]');
             savedPhotos.push(url);
             localStorage.setItem('ourCloudPhotos', JSON.stringify(savedPhotos));
-            
             displayPhoto(url);
-            alert("¡Foto guardada en la nube! ❤️");
+            alert("¡Foto guardada con éxito! ❤️");
         } else {
-            console.error("Error de ImgBB:", data);
-            alert("Error: " + data.error.message);
+            // ESTO TE DIRÁ EL ERROR REAL
+            alert("Error de ImgBB: " + data.error.message);
         }
     } catch (error) {
-        console.error("Error de conexión:", error);
-        alert("Hubo un error de red al subir.");
+        alert("Error de red: Verifica tu conexión a internet.");
     }
 }
 
-// 4. ESCUCHAR CAMBIO (CORREGIDO)
 if (imageInput) {
     imageInput.addEventListener('change', (e) => {
-        const file = e.target.files[0]; // <--- ESTO CORRIGE EL ERROR (seleccionamos el archivo 0)
+        const file = e.target.files[0]; // <--- ASEGÚRATE QUE TENGA EL [0]
         if (file) {
             uploadToImgBB(file);
         }
     });
 }
 
-// 5. MOSTRAR FOTO
 function displayPhoto(src) {
     if(!userGallery) return;
     const img = document.createElement('img');
